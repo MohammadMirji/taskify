@@ -11,7 +11,21 @@ const app = express();
 
 // --- Middleware ---
 app.use(helmet()); // Security headers
-app.use(cors());   // Enable CORS
+
+// ✅ CORS Configuration - Allow frontend to access backend
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://taskify-ynwo.vercel.app',
+    process.env.FRONTEND_URL || 'https://taskify-ynwo.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));   // Enable CORS with options
 app.use(express.json()); // ✅ Parse JSON request bodies
 
 // --- Routes ---
